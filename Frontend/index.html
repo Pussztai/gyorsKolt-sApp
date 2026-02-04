@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gyors Költés</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="theme-toggle" onclick="toggleTheme()">
+    <span class="theme-icon">🌓</span>
+    <span class="theme-label">Témaváltás</span>
+</div>
+
+<div class="spending">
+    <h2>0FT</h2>
+    <h4>Eddigi költéseid</h4>
+</div>
+
+<div class="mainRow">
+    <div class="diagramPart">
+        <div class="data">
+            <div class="chart">
+                <div class="bar-group">
+                    <div class="bar-wrapper">
+                        <span class="percent-label">0%</span>
+                        <div class="bar peach" style="--value:0"></div>
+                    </div>
+                    <span class="bar-label">Vásárlás</span>
+                </div>
+
+                <div class="bar-group">
+                    <div class="bar-wrapper">
+                        <span class="percent-label">0%</span>
+                        <div class="bar blue" style="--value:0"></div>
+                    </div>
+                    <span class="bar-label">Ajándékok</span>
+                </div>
+
+                <div class="bar-group">
+                    <div class="bar-wrapper">
+                        <span class="percent-label">0%</span>
+                        <div class="bar yellow" style="--value:0"></div>
+                    </div>
+                    <span class="bar-label">Étel</span>
+                </div>
+
+                <div class="bar-group">
+                    <div class="bar-wrapper">
+                        <span class="percent-label">0%</span>
+                        <div class="bar green" style="--value:0"></div>
+                    </div>
+                    <span class="bar-label">Auto</span>
+                </div>
+
+                <div class="bar-group">
+                    <div class="bar-wrapper">
+                        <span class="percent-label">0%</span>
+                        <div class="bar purple" style="--value:0"></div>
+                    </div>
+                    <span class="bar-label">Cigi/Vape</span>
+                </div>
+
+                <div class="bar-group">
+                    <div class="bar-wrapper">
+                        <span class="percent-label">0%</span>
+                        <div class="bar teal" style="--value:0"></div>
+                    </div>
+                    <span class="bar-label">Egészség</span>
+                </div>
+
+                <div class="bar-group">
+                    <div class="bar-wrapper">
+                        <span class="percent-label">0%</span>
+                        <div class="bar pink" style="--value:0"></div>
+                    </div>
+                    <span class="bar-label">Szórakozás</span>
+                </div>
+
+                <div class="bar-group">
+                    <div class="bar-wrapper">
+                        <span class="percent-label">0%</span>
+                        <div class="bar orange" style="--value:0"></div>
+                    </div>
+                    <span class="bar-label">Bármi más</span>
+                </div>
+            </div>
+
+            <div class="time-summary">
+                <div class="time-box">
+                    <span class="time-label">Napi</span>
+                    <span class="time-amount">0 Ft</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-label">Heti</span>
+                    <span class="time-amount">0 Ft</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-label">Havi</span>
+                    <span class="time-amount">0 Ft</span>
+                </div>
+            </div>
+
+            <div class="viewSwithing">
+                <div onclick="showCategories()" id="categories" class="switchBtn active"><button>Kategóriák</button></div>
+                <div onclick="showTransactions()" id="transactions" class="switchBtn"><button>Tranzakciók</button></div>
+            </div>
+
+            <div class="sumSpending">
+                <div class="spending-item">
+                    <div class="left">
+                        <div class="icon shopping">🛍️</div>
+                        <div class="text">
+                            <span class="category">Vásárlás</span>
+                        </div>
+                    </div>
+                    <div class="amount">0 Ft</div>
+                </div>
+                <div class="spending-item">
+                    <div class="left">
+                        <div class="icon gifts">🎁</div>
+                        <div class="text">
+                            <span class="category">Ajándékok</span>
+                        </div>
+                    </div>
+                    <div class="amount">0 Ft</div>
+                </div>
+                <div class="spending-item">
+                    <div class="left">
+                        <div class="icon food">🍕</div>
+                        <div class="text">
+                            <span class="category">Étel</span>
+                        </div>
+                    </div>
+                    <div class="amount">0 Ft</div>
+                </div>
+                <div class="spending-item">
+                    <div class="left">
+                        <div class="icon car">🚗</div>
+                        <div class="text">
+                            <span class="category">Auto</span>
+                        </div>
+                    </div>
+                    <div class="amount">0 Ft</div>
+                </div>
+
+                <div class="spending-item">
+                    <div class="left">
+                        <div class="icon smoke">🚬</div>
+                        <div class="text">
+                            <span class="category">Cigi/Vape</span>
+                        </div>
+                    </div>
+                    <div class="amount">0 Ft</div>
+                </div>
+                <div class="spending-item">
+                    <div class="left">
+                        <div class="icon health">💊</div>
+                        <div class="text">
+                            <span class="category">Egészséges dolgok</span>
+                        </div>
+                    </div>
+                    <div class="amount">0 Ft</div>
+                </div>
+                <div class="spending-item">
+                    <div class="left">
+                        <div class="icon entertainment">🎉</div>
+                        <div class="text">
+                            <span class="category">Szórakozás</span>
+                        </div>
+                    </div>
+                    <div class="amount">0 Ft</div>
+                </div>
+                <div class="spending-item">
+                    <div class="left">
+                        <div class="icon other">📦</div>
+                        <div class="text">
+                            <span class="category">Bármi más</span>
+                        </div>
+                    </div>
+                    <div class="amount">0 Ft</div>
+                </div>
+            </div>
+
+
+            <div class="transactionsPart">
+                <div class="transactions">
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+    <div class="add-panel">
+        <div class="Categories">
+            <select class="form-select cash">
+                <option>Cash</option>
+                <option>Card</option>
+            </select>
+            <select class="form-select cat">
+                <option>Vásárlás</option>
+                <option>Ajándékok</option>
+                <option>Étel</option>
+                <option>Auto</option>
+                <option>Cigi/Vape</option>
+                <option>Egészség</option>
+                <option>Szórakozás</option>
+                <option>Bármi más</option>
+            </select>
+        </div>
+
+        <div class="amount-display">
+            <span class="currency">$</span>
+            <span id="addingValue" class="value">0</span>
+        </div>
+
+        <input class="comment" placeholder="Add comment..." />
+
+        <div class="keypad">
+            <button id="1">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button class="action delete">⌫</button>
+
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button class="action rounding">💼</button>
+
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button class="action confirm">✔</button>
+
+            <button class="action zeroing">C</button>
+            <button>0</button>
+            <button>,</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
