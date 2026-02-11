@@ -1,4 +1,3 @@
-// ==================== TÉMAVÁLTÁS ====================
 const currentTheme = localStorage.getItem('theme') || 'light';
 if (currentTheme === 'dark') {
     document.body.classList.add('dark-theme');
@@ -18,26 +17,22 @@ function toggleTheme() {
 }
 
 
-// ==================== SZÁMOLÓGÉP LOGIKA ====================
 const display = document.getElementById("addingValue");
 const buttons = document.querySelectorAll(".keypad button");
 
 buttons.forEach(button => {
     button.addEventListener("click", () => {
 
-        // DELETE gomb
         if (button.classList.contains("delete")) {
             display.textContent = display.textContent.slice(0, -1) || "0";
             return;
         }
 
-        // CLEAR gomb (C)
         if (button.classList.contains("zeroing")) {
             display.textContent = "0";
             return;
         }
 
-        // SZÁMOK és VESSZŐ
         if (!isNaN(button.textContent) || button.textContent === ',') {
             if (display.textContent === "0" && button.textContent !== ',') {
                 display.textContent = button.textContent;
@@ -49,7 +44,6 @@ buttons.forEach(button => {
 });
 
 
-// ==================== KATEGÓRIA KIVÁLASZTÁS ====================
 const selectElement = document.querySelector(".cat");
 
 function getSelectedCategory() {
@@ -97,7 +91,6 @@ function showTransactions(){
 }
 
 
-// ==================== CONFIRM GOMB (MENTÉS) ====================
 const confirmButton = document.querySelector(".confirm");
 
 confirmButton.addEventListener("click", async () => {
@@ -106,7 +99,6 @@ confirmButton.addEventListener("click", async () => {
     const paymentMethod = document.querySelector(".cash").value;
     const comment = document.querySelector(".comment").value;
 
-    // Validáció
     if (!category || isNaN(amount) || amount <= 0) {
         alert("Hibás adat!");
         return;
@@ -139,15 +131,13 @@ confirmButton.addEventListener("click", async () => {
         const data = await response.json();
         console.log("Backend válasz:", data);
 
-        // UI frissítése
         updateUI(data);
 
          transactionsUpdate({
-        category: category,        // ← lokális változó
-         amount: amount       // ← vagy amount (lokális)
+        category: category,        
+         amount: amount       
     });
 
-        // Mezők visszaállítása
         display.textContent = "0";
         document.querySelector(".comment").value = "";
 
@@ -161,16 +151,13 @@ confirmButton.addEventListener("click", async () => {
 
 
 
-// ==================== UI FRISSÍTÉS ====================
 function updateUI(data) {
     console.log("UI frissítés, data:", data);
 
-    // Fő összeg frissítése
     if (data.totalSpending !== undefined) {
         document.querySelector('.spending h2').textContent = data.totalSpending + " Ft";
     }
 
-    // Időintervallumok frissítése
     const timeBoxes = document.querySelectorAll('.time-box');
     if (timeBoxes.length >= 3) {
         if (data.dailySpending !== undefined) {
@@ -185,11 +172,9 @@ function updateUI(data) {
     }
 
 
-    // transactions kiirasa
     
     
 
-    // Kategóriánkénti összegek frissítése
     if (data.summary && Array.isArray(data.summary)) {
         data.summary.forEach(item => {
             const spendingItems = document.querySelectorAll('.spending-item');
@@ -209,12 +194,10 @@ function updateUI(data) {
 
         });
 
-        // Diagram frissítése (százalékok) - JAVÍTOTT VÉGLEGESEN
         const barGroups = document.querySelectorAll('.bar-group');
 
         data.summary.forEach(item => {
             barGroups.forEach(barGroup => {
-                // A kategória neve a .bar-label span-ban van!
                 const barLabel = barGroup.querySelector('.bar-label');
 
                 if (barLabel && barLabel.textContent.trim() === item.category) {
@@ -246,7 +229,8 @@ async function loadTransactions(){
 
         transactions.forEach(transactions => {
             transactionsUpdate({
-                category : transactions.cateory,
+                method: transactions.paymentMethod,
+                category : transactions.category,
                 amount: transactions.amount
             });
 
@@ -261,17 +245,38 @@ async function loadTransactions(){
 function transactionsUpdate(transactionData) {
     const transactionsDiv = document.querySelector('.transactions');
     
+    const categoryStyles = {
+        'Ajándékok': { color: '#3b82f6', icon: '💝' },      
+        'Auto': { color: '#14b8a6', icon: '🚗' },          
+        'Vásárlás': { color: '#f59e0b', icon: '🛍️' },     
+        'Bármi más': { color: '#06b6d4', icon: '💳' },     
+        'Élelmiszer': { color: '#10b981', icon: '🍔' },    
+        'Szórakozás': { color: '#8b5cf6', icon: '🎮' },    
+        'Közlekedés': { color: '#0ea5e9', icon: '🚌' },    
+        'Lakhatás': { color: '#ef4444', icon: '🏠' }       
+    };
+
+    const style = categoryStyles[transactionData.category] || { color: '#6b7280', icon: '💰' };
+    
+    // const now = new Date();
+    // const timeStr = now.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' });
+    
     const transactionHTML = `
-        <div class="transaction-item">
-            <span class="category">${transactionData.category}</span>
-            <span class="transactionAmount">${transactionData.amount} Ft</span>
-        </div>
+        <div class="transaction-item" style="--category-color: ${style.color}">
+        <div class="transaction-icon">${style.icon}</div>
+        <span class="category">${transactionData.category}</span>
+        <span class="method">${transactionData.method || 'Készpénz'}</span>
+        <span class="transactionAmount">-${transactionData.amount.toLocaleString()} Ft</span>
+    </div>
     `;
     
-    transactionsDiv.insertAdjacentHTML('beforeend', transactionHTML);
+    transactionsDiv.insertAdjacentHTML('afterbegin', transactionHTML);
+
 }
 
-// ==================== OLDAL BETÖLTÉSKOR ====================
+
+
+
 window.addEventListener('DOMContentLoaded', async () => {
     try {
         console.log("Statisztikák betöltése...");
