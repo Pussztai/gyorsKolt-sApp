@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -35,6 +34,7 @@ public class SpendingService {
     public List<Spending> getTransactions(){
         return spendingRepository.findAll(Sort.by(Sort.Direction.DESC,"createdAt"));
     }
+
 
     public SpendingResponse getStatistics(){
         SpendingResponse spendingResponse = new SpendingResponse();

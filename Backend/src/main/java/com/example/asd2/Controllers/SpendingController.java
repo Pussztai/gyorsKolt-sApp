@@ -1,6 +1,7 @@
 package com.example.asd2.Controllers;
 
 
+import com.example.asd2.Repository.SpendingRepository;
 import com.example.asd2.Service.SpendingService;
 import com.example.asd2.dto.SpendingRequest;
 import com.example.asd2.dto.SpendingResponse;
@@ -19,6 +20,8 @@ import java.util.List;
 public class SpendingController {
     @Autowired
     private SpendingService spendigService;
+    @Autowired
+    private SpendingRepository spendingRepository;
 
     @PostMapping("/spending")
     public ResponseEntity<SpendingResponse> addSpending(@RequestBody SpendingRequest request){
@@ -37,5 +40,11 @@ public class SpendingController {
         List<Spending> transactions = spendigService.getTransactions();
         return ResponseEntity.ok(transactions);
 
+    }
+
+    @DeleteMapping("/transactions/{id}")
+    public ResponseEntity<?> deleteSpending(@PathVariable Long id) {
+        spendingRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

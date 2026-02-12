@@ -1,3 +1,4 @@
+
 const currentTheme = localStorage.getItem('theme') || 'light';
 if (currentTheme === 'dark') {
     document.body.classList.add('dark-theme');
@@ -227,8 +228,9 @@ async function loadTransactions(){
 
         const transactions = await response.json();
 
-        transactions.forEach(transactions => {
+        transactions.reverse().forEach(transactions => {
             transactionsUpdate({
+                id:transactions.id,
                 method: transactions.paymentMethod,
                 category : transactions.category,
                 amount: transactions.amount
@@ -258,15 +260,17 @@ function transactionsUpdate(transactionData) {
 
     const style = categoryStyles[transactionData.category] || { color: '#6b7280', icon: '💰' };
     
-    // const now = new Date();
-    // const timeStr = now.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' });
+ 
     
     const transactionHTML = `
-        <div class="transaction-item" style="--category-color: ${style.color}">
+        <div class="transaction-item" data-id="${transactionData.id}" style="--category-color: ${style.color}">
         <div class="transaction-icon">${style.icon}</div>
         <span class="category">${transactionData.category}</span>
         <span class="method">${transactionData.method || 'Készpénz'}</span>
         <span class="transactionAmount">-${transactionData.amount.toLocaleString()} Ft</span>
+        <span onclick="deleteFunction(this)" class="material-symbols-outlined deleteBtn">
+        delete
+        </span>
     </div>
     `;
     
@@ -274,6 +278,42 @@ function transactionsUpdate(transactionData) {
 
 }
 
+
+
+
+function deleteFunction(element){
+    const transactionItem = element.closest('.transaction-item');
+    const id = transactionItem.dataset.id;
+
+    transactionItem.style.animation = 'slideLeft 0.4s forwards';
+
+    transactionItem.addEventListener('animationend', async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/transactions/${id}`, {
+                method: "DELETE",
+            });
+
+            if(!response.ok){
+                console.error("Hiba a törlés során");
+                showToast("Hiba történt a törlés során!");
+                return;
+            }
+            
+            transactionItem.remove();
+            
+            const statsResponse = await fetch("http://localhost:8080/api/statistics");
+            if(statsResponse.ok) {
+                const data = await statsResponse.json();
+                updateUI(data);
+            }
+            
+            showToast("Tranzakció törölve!");
+            
+        } catch (error) {
+            console.error("Fetch hiba:", error);
+        }
+    });
+}
 
 
 

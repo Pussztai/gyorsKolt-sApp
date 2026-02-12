@@ -42,7 +42,6 @@
     --input-focus-border: transparent;
 }
 
-/* Dark Theme */
 body.dark-theme {
     --bg-primary: linear-gradient(135deg, #0a0a0f 0%, #1a1528 100%);
     --bg-secondary: rgba(26, 26, 40, 0.6);
@@ -464,8 +463,8 @@ body.dark-theme .bar.orange {
     grid-template-columns: 50px 1fr auto;
     grid-template-rows: auto auto;
     grid-template-areas: 
-        "icon category osszeg"
-        "icon method osszeg";
+        "icon category osszeg delete"
+        "icon method osszeg delete";
     column-gap: 14px;
     row-gap: 3px;
     padding: 16px 18px;
@@ -522,6 +521,17 @@ body.dark-theme .bar.orange {
     line-height: 1.2;
 }
 
+.deleteBtn {
+    margin-top: 10px;
+    color: red;
+    transition: all 0.5s;
+    
+}
+
+.deleteBtn:hover{
+    transform:scale(1.25) ;
+}
+
 .method {
     grid-area: method;
     font-size: 13px;
@@ -530,6 +540,8 @@ body.dark-theme .bar.orange {
     align-self: start;
     line-height: 1.2;
 }
+
+
 
 .transactionAmount {
     grid-area: osszeg;
@@ -544,6 +556,17 @@ body.dark-theme .bar.orange {
     background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(239, 68, 68, 0.15);
+}
+
+@keyframes slideLeft{
+    0%{
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100%{
+        transform: translateX(-100%);
+        opacity: 0;
+    }
 }
 
 @keyframes slideInUp {
