@@ -1,4 +1,29 @@
 
+
+async function checkAuth() {
+    try {
+        const response = await fetch("http://localhost:8080/api/statistics", {
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            window.location.href = "login.html";
+            return false;
+        }
+        
+        document.getElementById('loading')?.remove();
+        return true;
+        
+    } catch (error) {
+        console.error("Auth ellenőrzés sikertelen:", error);
+        window.location.href = "login.html";
+        return false;
+    }
+}
+
+checkAuth();
+
+
 const currentTheme = localStorage.getItem('theme') || 'light';
 if (currentTheme === 'dark') {
     document.body.classList.add('dark-theme');
@@ -113,6 +138,7 @@ confirmButton.addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: 'include',
             body: JSON.stringify({
                 category: category,
                 amount: amount,
@@ -135,6 +161,8 @@ confirmButton.addEventListener("click", async () => {
         updateUI(data);
 
          transactionsUpdate({
+            id: data.id,              
+    method: paymentMethod, 
         category: category,        
          amount: amount       
     });
@@ -220,7 +248,10 @@ function updateUI(data) {
 
 async function loadTransactions(){
     try{
-        const response = await fetch("http://localhost:8080/api/transactions");
+        // const response = await fetch("http://localhost:8080/api/transactions");
+        const response = await fetch("http://localhost:8080/api/transactions", {
+    credentials: 'include'  // ← ÚJ SOR
+});
         if(!response.ok){
             console.error("Nem sikerult a tranzakciok lekerese");
             return;
@@ -291,6 +322,7 @@ function deleteFunction(element){
         try {
             const response = await fetch(`http://localhost:8080/api/transactions/${id}`, {
                 method: "DELETE",
+                credentials: 'include'
             });
 
             if(!response.ok){
@@ -301,7 +333,10 @@ function deleteFunction(element){
             
             transactionItem.remove();
             
-            const statsResponse = await fetch("http://localhost:8080/api/statistics");
+            // const statsResponse = await fetch("http://localhost:8080/api/statistics");
+            const statsResponse = await fetch("http://localhost:8080/api/statistics", {
+    credentials: 'include'  // ← ÚJ SOR
+});
             if(statsResponse.ok) {
                 const data = await statsResponse.json();
                 updateUI(data);
@@ -320,7 +355,10 @@ function deleteFunction(element){
 window.addEventListener('DOMContentLoaded', async () => {
     try {
         console.log("Statisztikák betöltése...");
-        const response = await fetch("http://localhost:8080/api/statistics");
+        // const response = await fetch("http://localhost:8080/api/statistics");
+        const response = await fetch("http://localhost:8080/api/statistics", {
+    credentials: 'include'  // ← ÚJ SOR
+});
 
         if (!response.ok) {
             console.error("Nem sikerült a statisztikák lekérése");
